@@ -1,11 +1,11 @@
 // Refactor your code with underscore
-// Prompt the user
-// Please choose a startLine
-// Please chooose a startStation
-// Please choose an endLine
-// Please choose an endStation
-// Find the intersection
-// Display the number of stops
+// Prompt the user CHECK
+// Please choose a startLine CHECK
+// Please chooose a startStation CHECK
+// Please choose an endLine CHECK
+// Please choose an endStation CHECK
+// Find the intersection CHECK
+// Display the number of stops CHECK
 // Track the total journeys taken
 // Calculate total cost of journeys taken at $2.50 per ride.
 
@@ -20,9 +20,9 @@ Train.prototype.distance = function(board, exit) {
   return Math.abs(board - exit);
 };
 
-var lStations = [ "8th", "6th", "Union Square", "3rd", "1st" ];
-var nStations = [ "Times Square", "34th", "28th", "23rd", "Union Square", "8th" ];
-var sixStations = [ "Grand Central", "33rd", "28th", "23rd", "Union Square", "Astor Place" ];
+var lStations = [ "8th Ave", "6th", "Union Square", "3rd", "1st" ];
+var nStations = [ "Times Square", "34th", "28th and Broadway", "23rd and Broadway", "Union Square", "8th St-NYU" ];
+var sixStations = [ "Grand Central", "33rd", "28th and Park", "23rd and Park", "Union Square", "Astor Place" ];
 var gStations = [ "Greenpoint", "Nassau", "Metropolitan", "Broadway" ];
 
 var lTrain = new Train('The L Train', lStations);
@@ -34,6 +34,16 @@ var trains = [lTrain, nTrain, sixTrain, gTrain,];
 
 var msg = "Which train would you like to get on?\n" + displayLines();
 var startTrain = prompt(msg);
+
+var msg2 = "Which station would you like to get on?\n" + displayStartStations();
+var startStation = prompt(msg2);
+
+var msg4 = "Which train would you like to get off?\n" + displayLines();
+var endTrain = prompt(msg4);
+
+var msg3 = "Which station would you like to get off?\n" + displayEndStations();
+var endStation = prompt(msg3);
+
 
 var trains = [lTrain, nTrain, sixTrain, gTrain];
 
@@ -53,7 +63,7 @@ function trainName(train){
   return train.name + "\n"
 }
 
-function displayStations() {
+function displayStartStations() {
   var train = null;
   for (var j = 0; j < trains.length; j++) {
     if (trains[j].name === startTrain) {
@@ -67,20 +77,66 @@ function displayStations() {
   return trainStations.trim();
 }
 
-var msg2 = "Which station would you like to get on?\n" + displayStations();
-var startStation = prompt(msg2);
+function displayEndStations() {
+  var train = null;
+  for (var x = 0; x < trains.length; x++) {
+    if (trains[x].name === endTrain) {
+      train = trains[x];
+    }
+  }
+  var trainStations = "";
+  for (var y = 0; y < train.stations.length; y++) {
+    trainStations += train.stations[y] + "\n";
+  }
+  return trainStations.trim();
+}
 
-var msg3 = "Which station would you like to get off?\n" + displayStations();
-var endStation = prompt(msg3);
+var onTrain;
 
-function distance() {
+function onTheTrain() {
+  var train = null;
+  for (var b = 0; b < trains.length; b++) {
+    if (trains[b].name === startTrain) {
+      onTrain = trains[b];
+    }
+  }
+  return onTrain;
+}
+
+function offTheTrain() {
+  var train = null;
+  for (var c = 0; c < trains.length; c++) {
+    if (trains[c].name === endTrain) {
+      onTrain = trains[c];
+    }
+  }
+  return onTrain;
+}
+
+var hub = _.intersection(onTheTrain().stations, offTheTrain().stations);
+
+function firstDistance() {
   var train = null;
   for (var a = 0; a < trains.length; a++) {
     if (trains[a].name === startTrain) {
       train = trains[a];
     }
   }
-  alert(train.distance(startStation, endStation));
+  return train.distance(startStation, _.first(hub));
+}
+
+function secondDistance() {
+  var train = null;
+  for (var d = 0; d < trains.length; d++) {
+    if (trains[d].name === endTrain) {
+      train = trains[d];
+    }
+  }
+  return train.distance(_.first(hub), endStation);
+}
+
+function distance() {
+  alert(firstDistance() + secondDistance());
 }
 
 distance();
