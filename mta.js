@@ -103,40 +103,36 @@ function onTheTrain() {
   return onTrain;
 }
 
+var offTrain;
+
 function offTheTrain() {
   var train = null;
   for (var c = 0; c < trains.length; c++) {
     if (trains[c].name === endTrain) {
-      onTrain = trains[c];
+      offTrain = trains[c];
     }
   }
-  return onTrain;
+  return offTrain;
 }
 
 var hub = _.intersection(onTheTrain().stations, offTheTrain().stations);
 
 function firstDistance() {
-  var train = null;
-  for (var a = 0; a < trains.length; a++) {
-    if (trains[a].name === startTrain) {
-      train = trains[a];
-    }
-  }
-  return train.distance(startStation, _.first(hub));
+  return onTheTrain().distance(startStation, _.first(hub));
 }
 
 function secondDistance() {
-  var train = null;
-  for (var d = 0; d < trains.length; d++) {
-    if (trains[d].name === endTrain) {
-      train = trains[d];
-    }
-  }
-  return train.distance(_.first(hub), endStation);
+  return offTheTrain().distance(_.first(hub), endStation);
 }
 
 function distance() {
-  alert(firstDistance() + secondDistance());
+  if (onTheTrain() === offTheTrain()) {
+    alert(onTheTrain().distance(startStation,endStation));
+  } else if (_.first(hub) === undefined) {
+    alert("You have to walk");
+  } else {
+    alert(firstDistance() + secondDistance());
+  }
 }
 
 distance();
