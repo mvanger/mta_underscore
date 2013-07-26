@@ -9,6 +9,10 @@
 // Track the total journeys taken
 // Calculate total cost of journeys taken at $2.50 per ride.
 
+var message = "Take a subway ride? y/n";
+
+var choice = prompt(message);
+
 function Train(name, stations) {
   this.name = name;
   this.stations = stations;
@@ -30,7 +34,7 @@ var nTrain = new Train('The N Train', nStations);
 var sixTrain = new Train('The Six Train', sixStations);
 var gTrain = new Train('The G Train', gStations);
 
-var trains = [lTrain, nTrain, sixTrain, gTrain,];
+var trains = [lTrain, nTrain, sixTrain, gTrain];
 
 var msg = "Which train would you like to get on?\n" + displayLines();
 var startTrain = prompt(msg);
